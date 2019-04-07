@@ -1,22 +1,26 @@
+const Controller = require('./controller')
 const Order = require('../models/order')
 
-class OrdersController {
+class OrdersController extends Controller {
+
     getAll(req, res) {
-        Order.find({}).then((orders) => {
-            res.status(200)
-            res.json(orders)
-        }).catch((error) => {
-            res.status(400).send(error)
-        })
+        Order.find({})
+            .populate('products')
+            .exec()
+            .then((order) => this.sendResSuccess(res, order))
+            .catch((error) => this.sendResError(res, error))
     }
 
     getOrderById(req, res) {
-        Order.find({ _id: req.params.id }).then((order) => {
-            res.status(200)
-            res.json(order)
-        }).catch((error) => {
-            res.status(400).send(error)
-        })
+        Order.find(this.getIdQuery(req))
+            .populate('products')
+            .exec()
+            .then((order) => {
+                if (!order) return this.sendNotFound(res)
+
+                this.sendResSuccess(res, order)
+            })
+            .catch((error) => this.sendResError(res, error))
     }
 
     /**
@@ -25,21 +29,17 @@ class OrdersController {
      * @param {Response} res 
      */
     updateOrderStatus(req, res) {
-        Order.findOneAndUpdate({ _id: req.params.id }, { status: req.body.status }).then((order) => {
-            res.status(200)
-            res.redirect(`/order/${order._id}`)
-        }).catch((error) => {
-            res.status(400).send(error)
-        })
+        Order.findOneAndUpdate(this.getIdQuery(req), { status: req.body.status })
+            .then((order) => {
+                if (!order) return this.sendNotFound(res)
+                this.redirect(res, `/order/${order._id}`)
+            }).catch((error) => this.sendResError(res, error))
     }
 
     createOrder(req, res) {
-        new Order(req.body).save().then((order) => {
-            res.status(200)
-            res.json(order)
-        }).catch((error) => {
-            res.status(400).send(error)
-        })
+        new Order(req.body).save()
+            .then((order) => this.sendResSuccess(res, order))
+            .catch((error) => this.sendResError(res, error))
     }
 }
 

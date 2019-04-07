@@ -9,7 +9,7 @@ module.exports = (app) => {
     app.post('/product', (req, res) => productsController.createProduct(req, res))
 
     app.get('/product/:id', (req, res) => productsController.getById(req, res))
-    app.delete('/product/:id', (req, res) => productsController.de(req, res))
+    app.delete('/product/:id', (req, res) => productsController.deleteById(req, res))
     app.put('/product/:id', (req, res) => productsController.updateById(req, res))
 
     app.get('/orders', (req, res) => ordersController.getAll(req, res))

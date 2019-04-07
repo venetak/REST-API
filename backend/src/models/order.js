@@ -3,7 +3,7 @@ const Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId,
     STATUSES = ['Processing', 'Delivered', 'Cancelled', 'Pending']
 
-const Order = mongoose.model('Order', { 
+const Order = mongoose.model('Order', {
     date: {
         type: String,
         default: Date.now,
@@ -11,8 +11,9 @@ const Order = mongoose.model('Order', {
     },
     products: [{
         type: ObjectId,
-        required: true
-    }], 
+        required: true,
+        ref: 'Product'
+    }],
     status: {
         type: String,
         enum: STATUSES

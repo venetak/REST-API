@@ -1,47 +1,41 @@
+const Controller = require('./controller')
 const Product = require('../models/product')
 
-class ProductsController {
+class ProductsController extends Controller {
     getAll(req, res) {
-        Product.find({}).then((products) => {
-            res.json(products)
-        }).catch((error) => {
-            res.status(400).send()
-        })
+        Product.find({})
+            .then((products) => this.sendResSuccess(res, products))
+            .catch((error) => this.sendResError(res, error))
     }
 
     getById(req, res) {
-        Product.findOne({ _id: req.params.id }).then((product) => {
-            res.status(200)
-            res.json(product)
-        }).catch(() => {
-            res.status(400).send()
-        })
+        Product.findOne(this.getIdQuery(req))
+            .then((product) => {
+                if (!product) return this.sendNotFound(res)
+                this.sendResSuccess(res, product)
+
+            })
+            .catch((error) => this.sendResError(res, error))
     }
 
     updateById(req, res) {
-        Product.findOneAndUpdate({ _id: req.params.id }, req.body).then((product) => {
-            res.status(200)
-            res.redirect(`/product/${product._id}`)
-        }).catch(() => {
-            res.status(400).send()
-        })
+        Product.findOneAndUpdate(this.getIdQuery(req), req.body)
+            .then((product) => {
+                if (!product) return this.sendNotFound(res)
+                this.redirect(res, `/product/${product._id}`)
+            }).catch((error) => this.sendResError(res, error))
     }
 
     deleteById(req, res) {
-        Product.findByIdAndRemove(req.params.id).then(() => {
-            res.status(200).send()
-        }).catch(() => {
-            res.status(400).send()
-        })
+        Product.findByIdAndRemove(req.params.id)
+            .then(() => this.sendResSuccess(res))
+            .catch((error) => this.sendResError(res, error))
     }
 
     createProduct(req, res) {
-        new Product(req.body).save().then((product) => {
-            res.status(200)
-            res.json(product)
-        }).catch((error) => {
-            res.status(400).send(error)
-        })
+        new Product(req.body).save()
+            .then((product) => this.sendResSuccess(res, product))
+            .catch((error) => this.sendResError(res, error))
     }
 }
 
