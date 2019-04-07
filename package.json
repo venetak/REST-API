@@ -1,0 +1,21 @@
+{
+  "name": "rest-api",
+  "version": "1.0.0",
+  "description": "Nodejs and Expressjs REST API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devserver": "nodemon ./backend/src/index.js --watch ./ -e html,js"
+  },
+  "author": "veneta.kochovdka",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "1.18.10"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "4.16.4",
+    "mongoose": "^5.4.22",
+    "moongoose": "0.0.5"
+  }
+}
