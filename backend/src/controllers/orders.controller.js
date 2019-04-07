@@ -3,6 +3,11 @@ const Order = require('../models/order')
 
 class OrdersController extends Controller {
 
+    /**
+     * Gets all orders from the database
+     * @param {Request} req
+     * @param {Response} res
+     */
     getAll(req, res) {
         Order.find({})
             .populate('products')
@@ -11,9 +16,14 @@ class OrdersController extends Controller {
             .catch((error) => this.sendResError(res, error))
     }
 
+    /**
+     * Gets a specific order by id
+     * @param {Request} req
+     * @param {Response} res
+     */
     getOrderById(req, res) {
         Order.find(this.getIdQuery(req))
-            .populate('products')
+            .populate('products') //show the actual product, instead of its id
             .exec()
             .then((order) => {
                 if (!order) return this.sendNotFound(res)
@@ -24,7 +34,7 @@ class OrdersController extends Controller {
     }
 
     /**
-     * 
+     * Updates an order by id
      * @param {Request} req 
      * @param {Response} res 
      */
@@ -32,10 +42,16 @@ class OrdersController extends Controller {
         Order.findOneAndUpdate(this.getIdQuery(req), { status: req.body.status })
             .then((order) => {
                 if (!order) return this.sendNotFound(res)
+
                 this.redirect(res, `/order/${order._id}`)
             }).catch((error) => this.sendResError(res, error))
     }
 
+    /**
+     * Creates a new order
+     * @param {Request} req
+     * @param {Response} res
+     */
     createOrder(req, res) {
         new Order(req.body).save()
             .then((order) => this.sendResSuccess(res, order))
