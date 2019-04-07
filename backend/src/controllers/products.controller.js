@@ -40,7 +40,7 @@ class ProductsController {
             res.status(200)
             res.json(product)
         }).catch((error) => {
-            res.status(400).send()
+            res.status(400).send(error)
         })
     }
 }

@@ -1,14 +1,22 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId
+    ObjectId = Schema.ObjectId,
+    STATUSES = ['Processing', 'Delivered', 'Cancelled', 'Pending']
 
 const Order = mongoose.model('Order', { 
-    date: String,
+    date: {
+        type: String,
+        default: Date.now,
+        required: true
+    },
     products: [{
-        type: ObjectId
+        type: ObjectId,
+        required: true
     }], 
-    status: String
+    status: {
+        type: String,
+        enum: STATUSES
+    }
 })
-
 
 module.exports = Order

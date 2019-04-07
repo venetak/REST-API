@@ -11,7 +11,7 @@ class OrdersController {
     }
 
     getOrderById(req, res) {
-        Order.find({_id: req.params.id}).then((order) => {
+        Order.find({ _id: req.params.id }).then((order) => {
             res.status(200)
             res.json(order)
         }).catch((error) => {
@@ -25,7 +25,7 @@ class OrdersController {
      * @param {Response} res 
      */
     updateOrderStatus(req, res) {
-        Order.findOneAndUpdate({_id: req.params.id}, {status: req.body.status}).then((order) => {
+        Order.findOneAndUpdate({ _id: req.params.id }, { status: req.body.status }).then((order) => {
             res.status(200)
             res.redirect(`/order/${order._id}`)
         }).catch((error) => {
@@ -33,10 +33,7 @@ class OrdersController {
         })
     }
 
-    createOrder(req, res){
-        const date = Date.now()
-        req.body.date = date
-
+    createOrder(req, res) {
         new Order(req.body).save().then((order) => {
             res.status(200)
             res.json(order)
