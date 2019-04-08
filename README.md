@@ -37,8 +37,8 @@ Send a POST/login request with this body:
 
 ## API requests:
 
-1. GET /products
-1. POST /product
+1. **GET** `/products`
+1. **POST** `/product`
     1. Product schema:
     ```js
     {
@@ -57,11 +57,11 @@ Send a POST/login request with this body:
         },
     }
     ```
-1. GET /product/:id
-1. DELETE /product/:id
-1. PUT /product/:id
-1. GET /orders
-1. POST /order
+1. **GET** `/product/:id`
+1. **DELETE** `/product/:id`
+1. **PUT** `/product/:id`
+1. **GET** `/orders`
+1. **POST** `/order`
   1. Order schema
   ```js
    {
@@ -81,7 +81,7 @@ Send a POST/login request with this body:
     }
   }
   ```
-1. GET /order/:id
-1. PUT /order/:id
-1. POST /login
-1. POST /logout
+1. **GET** `/order/:id`
+1. **PUT** `/order/:id`
+1. **POST** `/login`
+1. **POST** `/logout`
